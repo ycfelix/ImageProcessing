@@ -2,6 +2,13 @@
 testing using different image processing algorithm
 
 
+
+update: 2018/12/27
+prototype slope finding algorithm, brute force calculation
+Detectable range: 0(horizontal) ~ 45 degrees
+
+
+update: 2018/12/27
 edge finding algorithm, re-implementation in C/C++
 
 Input: 0-255 grayscale image
