@@ -15,11 +15,20 @@ typedef struct
 
 typedef struct
 {
-	int X=0;
-	int Y=0;
+	int X	= 0;
+	int Y	= 0;
 }Coordinate;
 
-Coordinate* GetMiddleCoordinate(int image[][WIDTH]);
+typedef struct
+{
+	double Slope		=	0;
+	double Intercept	=	0;
+}Line;
 
+// return a Line object which contains the slope and intercept
+Line GetGeometry(int image[][WIDTH]);
+
+//testing using a 36*36 size image
+void TestImage();
 
 #endif /* LINETRACKING_H_ */

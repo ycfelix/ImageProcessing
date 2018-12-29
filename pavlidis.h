@@ -11,6 +11,18 @@
 #define __PAVLIDIS_H__
 
 #include <string.h>
+typedef struct
+{
+	int imageData[36*36]={0};
+	int 	width=36;
+	int 	height=36;
+	int 	widthStep=36;
+
+}IplImage;
+
+void BinarizeImage(IplImage, IplImage);
+
+IplImage EdgeFinding(IplImage, IplImage);
 
 void
 Pavlidis_contour_tracing(int* srcbin,

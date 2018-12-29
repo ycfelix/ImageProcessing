@@ -13,15 +13,42 @@ double bias = 0.0;
 
 void GetFilter(Filter filter,double matrix[][3])
 {
+	static double blurer[3][3] =
+	{
+	{1/9.0, 1/9.0, 1/9.0},
+	{1/9.0, 1/9.0, 1/9.0},
+	{1/9.0, 1/9.0, 1/9.0}
+	};
 
+
+	static double emboss_kernel[3][3] = {
+	  -2., -1.,  0.,
+	  -1.,  1.,  1.,
+	  0.,  1.,  2.,
+	};
+
+	static double sharpen_kernel[3][3] = {
+	  -1.0, -1.0, -1.0,
+	  -1.0,  9.0, -1.0,
+	  -1.0, -1.0, -1.0
+	};
+	static double sobel[3][3] = {
+	  -1., -2., -1.,
+	  0.,  0.,  0.,
+	  1.,  2.,  1.,
+	};
+	static double box_blur[3][3] = {
+	  1.0, 1.0, 1.0,
+	  1.0, 1.0, 1.0,
+	  1.0, 1.0, 1.0,
+	};
 	switch(filter)
 	{
-	//case blur:memcpy(matrix,blurer,3*3*sizeof(double));break;
-	case sharpe:matrix=sharpen_kernel;break;
-	case emboss:matrix=emboss_kernel;break;
-	case sharpener:matrix=sharpen_kernel;break;
-	case sobel_emboss:matrix=sobel;break;
-	case box: matrix=box_blur;break;
+	case blur:memcpy(matrix,blurer,3*3*sizeof(double));break;
+	case sharpe:memcpy(matrix,sharpen_kernel,3*3*sizeof(double));break;
+	case emboss:memcpy(matrix,emboss_kernel,3*3*sizeof(double));break;
+	case sobel_emboss:memcpy(matrix,sobel,3*3*sizeof(double));break;
+	case box:memcpy(matrix,box_blur,3*3*sizeof(double));break;
 	default: break;
 	}
 }

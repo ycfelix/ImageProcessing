@@ -17,6 +17,30 @@ typedef struct tagPOINT {
 	long y;
 } POINT,POINTL,*PPOINT,*LPPOINT,*PPOINTL,*LPPOINTL;
 
+
+void BinarizeImage(IplImage src_img, IplImage src_bin)
+{
+		// Binary
+		for (int j=0;j<src_img.height;j++)
+		{
+			for (int i=0;i<src_img.width;i++)
+			{
+				int g = src_img.imageData[j*src_img.widthStep+i];
+
+				if( g > 128 )
+				{
+					src_bin.imageData[j*src_bin.widthStep+i] = 0;
+				}
+				else
+				{
+					src_bin.imageData[j*src_bin.widthStep+i] = 255;
+				}
+			}
+		}
+}
+
+
+
 POINT
 Pavlidis_start_point(int* srcbin,
 					 int wid, int hei, int widstep)
@@ -61,6 +85,16 @@ Pavlidis_TurnRight(int d)
 		dnew = 1;
 	return dnew;
 }
+
+IplImage EdgeFinding(IplImage src_bin, IplImage dst_contour)
+{
+
+		Pavlidis_contour_tracing(src_bin.imageData, src_bin.width, src_bin.height, src_bin.widthStep,
+			dst_contour.imageData, dst_contour.width, dst_contour.height, dst_contour.widthStep);
+
+		return dst_contour;
+}
+
 
 void
 Pavlidis_contour_tracing(int* srcbin,
