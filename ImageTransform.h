@@ -20,19 +20,13 @@ typedef enum
 }
 Filter;
 
-static double blurer[3][3] =
-{
-{1/9.0, 1/9.0, 1/9.0},
-{1/9.0, 1/9.0, 1/9.0},
-{1/9.0, 1/9.0, 1/9.0}
-};
+//static double blurer[3][3] =
+//{
+//{1/9.0, 1/9.0, 1/9.0},
+//{1/9.0, 1/9.0, 1/9.0},
+//{1/9.0, 1/9.0, 1/9.0}
+//};
 
-static double sharper[3][3] =
-{
-  -1, -1, -1,
-  -1,  9, -1,
-  -1, -1, -1
-};
 
 static double emboss_kernel[3][3] = {
   -2., -1.,  0.,
@@ -58,7 +52,7 @@ static double box_blur[3][3] = {
 
 void GetFilter(Filter filter,double matrix[][3]);
 
-void ImageFiltering(int image[HEIGHT][WIDTH]);
+void ImageFiltering(int image[HEIGHT][WIDTH], double filter[][3]);
 
 
 

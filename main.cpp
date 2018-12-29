@@ -26,9 +26,9 @@ typedef struct
 int main(int argc, char* argv[])
 {
 
-	IplImage src_img;
+	//IplImage src_img;
 	IplImage src_bin, dst_contour;
-	int imageData[]={255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255
+	int imageData[36][36]={255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255
 			,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255
 			,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255
 			,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255
@@ -66,40 +66,53 @@ int main(int argc, char* argv[])
 			,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255
 
 						};
-	memcpy(src_img.imageData,imageData,36*36*sizeof(int));
+	//memcpy(src_img.imageData,imageData,36*36*sizeof(int));
 
 
 
 
-	// Binary
-	for (int j=0;j<src_img.height;j++)
-	{
-		for (int i=0;i<src_img.width;i++)
-		{
-			int g = src_img.imageData[j*src_img.widthStep+i];
-
-			if( g > 128 )
-			{
-				src_bin.imageData[j*src_bin.widthStep+i] = 0;
-			}
-			else
-			{
-				src_bin.imageData[j*src_bin.widthStep+i] = 255;
-			}
-		}
-	}
+//	// Binary
+//	for (int j=0;j<src_img.height;j++)
+//	{
+//		for (int i=0;i<src_img.width;i++)
+//		{
+//			int g = src_img.imageData[j*src_img.widthStep+i];
+//
+//			if( g > 128 )
+//			{
+//				src_bin.imageData[j*src_bin.widthStep+i] = 0;
+//			}
+//			else
+//			{
+//				src_bin.imageData[j*src_bin.widthStep+i] = 255;
+//			}
+//		}
+//	}
 
 	// Contour Tracing
-	Pavlidis_contour_tracing(src_bin.imageData, src_bin.width, src_bin.height, src_bin.widthStep,
-		dst_contour.imageData, dst_contour.width, dst_contour.height, dst_contour.widthStep);
+	//Pavlidis_contour_tracing(src_bin.imageData, src_bin.width, src_bin.height, src_bin.widthStep,
+	//	dst_contour.imageData, dst_contour.width, dst_contour.height, dst_contour.widthStep);
 
 	// Display
+
+	static double blurer[3][3] =
+	{
+			  -1, -1, -1,
+			  -1,  9, -1,
+			  -1, -1, -1
+	};
+
+	GetFilter(Filter::emboss,blurer);
+	ImageFiltering(imageData,blurer);
+
+
+
 
 	for(int i=0;i<dst_contour.height;i++)
 	{
 		for(int j=0;j<dst_contour.width;j++)
 			{
-				cout<<dst_contour.imageData[i*dst_contour.height+j];
+				cout<<imageData[i][j];
 			}
 		cout<<endl;
 	}

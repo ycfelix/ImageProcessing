@@ -16,8 +16,8 @@ void GetFilter(Filter filter,double matrix[][3])
 
 	switch(filter)
 	{
-	case blur:matrix=blurer;break;
-	case sharpe:matrix=sharper;break;
+	//case blur:memcpy(matrix,blurer,3*3*sizeof(double));break;
+	case sharpe:matrix=sharpen_kernel;break;
 	case emboss:matrix=emboss_kernel;break;
 	case sharpener:matrix=sharpen_kernel;break;
 	case sobel_emboss:matrix=sobel;break;
@@ -62,20 +62,21 @@ int max(int x,int y)
 return x>y?x:y;
 }
 
-void Filtering(int image[][WIDTH], int filter[][3])
+void ImageFiltering(int image[][WIDTH], double filter[][3])
 {
-	int color=0;
+
 	int result[HEIGHT][WIDTH]={0};
 	for(int y = 0; y < HEIGHT; y++)
 	for(int x = 0; x < WIDTH; x++)
 	{
+		double color=0;
 	    //set the color values in the arrays
 	    for(int filterY = 0; filterY < 3; filterY++)
 	    	for(int filterX = 0; filterX < 3; filterX++)
 	    	{
 	    		int imageX = (x - 3 / 2 + filterX + WIDTH) % WIDTH;
 	    		int imageY = (y - 3 / 2 + filterY + HEIGHT) % HEIGHT;
-	    		color += image[imageY][imageX]* filter[filterY][filterX];
+	    		color += (double)(image[imageY][imageX]* filter[filterY][filterX]);
 
 	    	}
 	    result[y][x]= min(max(int(factor * color + bias), 0), 255);
