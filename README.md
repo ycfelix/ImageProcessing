@@ -1,9 +1,13 @@
 # ImageProcessing
-testing using different image processing algorithm
+testing using different image processing algorithm<br/>
+update: 2019/1/3<br/>
+Slope finding algorithm for image with a lot of noise<br/>
+<img src="https://github.com/ycfelix/ImageProcessing/blob/master/perfect.jpg" width="100" height="100" /><br/>
+The returned value is y=-1.56757x+58, which is very close to the actual result<br/>
+In `logic.h` contains the binary image, In `main.cpp` contains the demo code to print slope and intercept<br/>
 
 
-
-update: 2018/12/27
+update: 2018/12/27<br/>
 prototype slope finding algorithm, brute force calculation<br/>
 Detectable range: 0(horizontal) ~ 45 degrees<br/>
 `SlopeFinder.h` and `SlopeFinder.cpp` contains the method to get slope of a given image which is a int[][]
