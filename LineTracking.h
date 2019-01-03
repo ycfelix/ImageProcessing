@@ -26,7 +26,7 @@ typedef struct
 }Line;
 
 // return a Line object which contains the slope and intercept
-Line GetGeometry(int image[]);
+Line GetGeometry(int image[][80]);
 
 //testing using a 36*36 size image
 void TestImageGeometry();
