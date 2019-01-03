@@ -7,21 +7,19 @@
 
 
 #include "pavlidis.h"
-#include <iostream>
 #include "ImageTransform.h"
 #include "LineTracking.h"
 
-using namespace std;
 
 
 int main()
 {
 
-	/*
-	Rotate90degrees(image);
+
+	//Rotate90degrees(image);
 
 	TestImageGeometry();
-*/
+
 	return 0;
 }
 

@@ -26,9 +26,9 @@ typedef struct
 }Line;
 
 // return a Line object which contains the slope and intercept
-Line GetGeometry(int image[][WIDTH]);
+Line GetGeometry(int image[]);
 
 //testing using a 36*36 size image
-void TestImage();
+void TestImageGeometry();
 
 #endif /* LINETRACKING_H_ */
