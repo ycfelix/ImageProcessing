@@ -110,7 +110,7 @@ Line GetGeometry(Coordinate source, Coordinate destination)
 	return result;
 }
 
-float LinePercentage(Line line)
+float LinePercentage(Line line,int image[][80])
 {
 	int TotalPixel=0;
 	int NumberOfBlack=0;
@@ -156,7 +156,7 @@ float LinePercentage(Line line)
 
 
 
-void GetPixelsForTop(List* Top)
+void GetPixelsForTop(List* Top,int image[][80])
 {
 	for(int i=0;i<80;i++)
 	{
@@ -167,7 +167,7 @@ void GetPixelsForTop(List* Top)
 		}
 	}
 }
-void GetPixelsForLeft(List* Left)
+void GetPixelsForLeft(List* Left,int image[][80])
 {
 	for(int i=0;i<60;i++)
 	{
@@ -178,7 +178,7 @@ void GetPixelsForLeft(List* Left)
 		}
 	}
 }
-void GetPixelsForBottom(List* Bottom)
+void GetPixelsForBottom(List* Bottom,int image[][80])
 {
 	for(int i=0;i<80;i++)
 	{
@@ -189,7 +189,7 @@ void GetPixelsForBottom(List* Bottom)
 		}
 	}
 }
-void GetPixelsForRight(List* Right)
+void GetPixelsForRight(List* Right,int image[][80])
 {
 	for(int i=0;i<60;i++)
 	{
@@ -202,7 +202,7 @@ void GetPixelsForRight(List* Right)
 }
 
 
-void FindMaxSlope(Line* max,List s,List d)
+void FindMaxSlope(Line* max,List s,List d,int image[][80])
 {
 
 	for(int i=0;i<s.size;i++)
@@ -213,7 +213,7 @@ void FindMaxSlope(Line* max,List s,List d)
 			Coordinate destination=d.array[j];
 			Line result=GetGeometry(source,destination);
 
-			if(LinePercentage(result)>LinePercentage(*max))
+			if(LinePercentage(result,image)>LinePercentage(*max,image))
 			{
 				//cout<<" slope: "<<result.slope<<" inter: "<<result.intercept;
 				//cout<<" percentage "<<LinePercentage(result)<<endl;
@@ -225,7 +225,7 @@ void FindMaxSlope(Line* max,List s,List d)
 	}
 }
 
-Line OptimalSlope()
+Line OptimalSlope(int image[][80])
 {
 	Line temp={0,0};
 	Line* max=&temp;
@@ -237,13 +237,13 @@ Line OptimalSlope()
 	List Right={0,0};
 	List Bottom={0,0};
 	edge=&Top;
-	GetPixelsForTop(edge);
+	GetPixelsForTop(edge,image);
 	edge=&Left;
-	GetPixelsForLeft(edge);
+	GetPixelsForLeft(edge,image);
 	edge=&Right;
-	GetPixelsForRight(edge);
+	GetPixelsForRight(edge,image);
 	edge=&Bottom;
-	GetPixelsForBottom(edge);
+	GetPixelsForBottom(edge,image);
 	Tuple first={Top,Left};
 	Tuple second={Top,Right};
 	Tuple third={Top,Bottom};
@@ -255,7 +255,7 @@ Line OptimalSlope()
 
 	for(int i=0;i<6;i++)
 	{
-		FindMaxSlope(max,Graph[i].element1,Graph[i].element2);
+		FindMaxSlope(max,Graph[i].element1,Graph[i].element2,image);
 	}
 	return *max;
 }

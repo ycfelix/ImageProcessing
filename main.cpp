@@ -21,7 +21,7 @@ int main()
 
 	//TestImageGeometry();
 
-	Line geometry=OptimalSlope();
+	Line geometry=OptimalSlope(image);
 	cout<<"slope: "<<geometry.slope<< " intercept is: "<<geometry.intercept<<endl;
 
 	return 0;
