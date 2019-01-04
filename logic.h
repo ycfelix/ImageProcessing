@@ -69,12 +69,22 @@ int image[60][80]=
 
 };
 
+struct Coordinate
+{
+	int x;
+	int y;
+};
 
-template <class T>
+struct List
+{
+	Coordinate array[80];
+	int size;
+};
+
 struct Tuple
 {
-	T element1;
-	T element2;
+	List element1;
+	List element2;
 };
 
 struct Line
@@ -82,115 +92,17 @@ struct Line
 	float slope;
 	float intercept;
 };
-struct Coordinate
-{
-	int x;
-	int y;
-};
-vector<Coordinate> Top;
-vector<Coordinate> Left;
-vector<Coordinate> Right;
-vector<Coordinate> Bottom;
 
-void GetPixelsForTop()
-{
-	for(int i=0;i<80;i++)
-	{
-		if(image[0][i]==0)
-		{
-			Coordinate coordinate={i,0};
-			Top.push_back(coordinate);
-		}
-	}
-}
-void GetPixelsForLeft()
-{
-	for(int i=0;i<60;i++)
-	{
-		if(image[i][0]==0)
-		{
-			Coordinate coordinate={0,i};
-			Left.push_back(coordinate);
-		}
-	}
-}
-void GetPixelsForBottom()
-{
-	for(int i=0;i<80;i++)
-	{
-		if(image[59][i]==0)
-		{
-			Coordinate coordinate={i,59};
-			Bottom.push_back(coordinate);
-		}
-	}
-}
-void GetPixelsForRight()
-{
-	for(int i=0;i<60;i++)
-	{
-		if(image[i][79]==0)
-		{
-			Coordinate coordinate={79,i};
-			Right.push_back(coordinate);
-		}
-	}
-}
-Line GetGeometry(Coordinate source, Coordinate destination);
-float LinePercentage(Line line);
-
-
-void FindMaxSlope(Line* max,vector<Coordinate> s,vector<Coordinate> d)
-{
-
-	for(unsigned int i=0;i<s.size();i++)
-	{
-		Coordinate source=s.at(i);
-		for(unsigned int j=0;j<d.size();j++)
-		{
-			Coordinate destination=d.at(j);
-			Line result=GetGeometry(source,destination);
-		cout<<" slope: "<<result.slope<<" inter: "<<result.intercept;
-			cout<<" percentage "<<LinePercentage(result)<<endl;
-			if(LinePercentage(result)>LinePercentage(*max))
-			{
-				max->intercept=result.intercept;
-				max->slope=result.slope;
-			}
-
-		}
-	}
-}
-
-Line OptimalSlope()
-{
-	Line temp={0,0};
-	Line* max=&temp;
-
-	GetPixelsForTop();
-	GetPixelsForLeft();
-	GetPixelsForRight();
-	GetPixelsForBottom();
-	Tuple<vector<Coordinate>> first={Top,Left};
-	Tuple<vector<Coordinate>> second={Top,Right};
-	Tuple<vector<Coordinate>> third={Top,Bottom};
-	Tuple<vector<Coordinate>> forth={Left,Right};
-	Tuple<vector<Coordinate>> fifth={Left,Bottom};
-	Tuple<vector<Coordinate>> sixth={Right,Bottom};
-
-	Tuple<vector<Coordinate>> Graph[6]={first,second,third,forth,fifth,sixth};
-
-	for(int i=0;i<6;i++)
-	{
-		FindMaxSlope(max,Graph[i].element1,Graph[i].element2);
-	}
-	return *max;
-}
 
 Line GetGeometry(Coordinate source, Coordinate destination)
 {
 	Line result={0,0};
+
+
+	//TODO: handle the horizontal geometry
 	if((source.x-destination.x)==0){return result;}
+
+
 	float slope=(float)(((float)source.y-(float)destination.y)/((float)source.x-(float)destination.x));
 	float intercept=source.y-source.x*slope;
 	result.slope=slope;
@@ -219,6 +131,7 @@ float LinePercentage(Line line)
 		if(line.slope>=-0.001&&line.slope<=0.001)
 		{
 			//need to handle vertical line
+			//TODO: handle the horizontal geometry
 			continue;
 		}
 		int x_cor=round((float)((float)(i-line.intercept)/(float)line.slope));
@@ -237,5 +150,113 @@ float LinePercentage(Line line)
 		return 0;
 	}
 	return (float)((float)NumberOfBlack/(float)TotalPixel)*100;
+}
+
+
+
+
+
+void GetPixelsForTop(List* Top)
+{
+	for(int i=0;i<80;i++)
+	{
+		if(image[0][i]==0)
+		{
+			Coordinate coordinate={i,0};
+			Top->array[Top->size++]=coordinate;
+		}
+	}
+}
+void GetPixelsForLeft(List* Left)
+{
+	for(int i=0;i<60;i++)
+	{
+		if(image[i][0]==0)
+		{
+			Coordinate coordinate={0,i};
+			Left->array[Left->size++]=coordinate;
+		}
+	}
+}
+void GetPixelsForBottom(List* Bottom)
+{
+	for(int i=0;i<80;i++)
+	{
+		if(image[59][i]==0)
+		{
+			Coordinate coordinate={i,59};
+			Bottom->array[Bottom->size++]=coordinate;
+		}
+	}
+}
+void GetPixelsForRight(List* Right)
+{
+	for(int i=0;i<60;i++)
+	{
+		if(image[i][79]==0)
+		{
+			Coordinate coordinate={79,i};
+			Right->array[Right->size++]=coordinate;
+		}
+	}
+}
+
+
+void FindMaxSlope(Line* max,List s,List d)
+{
+
+	for(int i=0;i<s.size;i++)
+	{
+		Coordinate source=s.array[i];
+		for(int j=0;j<d.size;j++)
+		{
+			Coordinate destination=d.array[j];
+			Line result=GetGeometry(source,destination);
+
+			if(LinePercentage(result)>LinePercentage(*max))
+			{
+				//cout<<" slope: "<<result.slope<<" inter: "<<result.intercept;
+				//cout<<" percentage "<<LinePercentage(result)<<endl;
+				max->intercept=result.intercept;
+				max->slope=result.slope;
+			}
+
+		}
+	}
+}
+
+Line OptimalSlope()
+{
+	Line temp={0,0};
+	Line* max=&temp;
+
+	List* edge=0;
+
+	List Top={0,0};
+	List Left={0,0};
+	List Right={0,0};
+	List Bottom={0,0};
+	edge=&Top;
+	GetPixelsForTop(edge);
+	edge=&Left;
+	GetPixelsForLeft(edge);
+	edge=&Right;
+	GetPixelsForRight(edge);
+	edge=&Bottom;
+	GetPixelsForBottom(edge);
+	Tuple first={Top,Left};
+	Tuple second={Top,Right};
+	Tuple third={Top,Bottom};
+	Tuple forth={Left,Right};
+	Tuple fifth={Left,Bottom};
+	Tuple sixth={Right,Bottom};
+
+	Tuple Graph[6]={first,second,third,forth,fifth,sixth};
+
+	for(int i=0;i<6;i++)
+	{
+		FindMaxSlope(max,Graph[i].element1,Graph[i].element2);
+	}
+	return *max;
 }
 
