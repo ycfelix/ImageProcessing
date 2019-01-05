@@ -21,7 +21,7 @@ int main()
 	//Line geometry=GetGeometry(img);
 	//cout<<"slope: "<<geometry.Slope<< " intercept is: "<<geometry.Intercept<<endl;
 
-	Line geometry=OptimalSlope();
+	Line geometry=OptimalSlope(image);
 	cout<<"slope: "<<geometry.slope<< " intercept is: "<<geometry.intercept<<endl;
 
 	auto finish = std::chrono::high_resolution_clock::now();
