@@ -7,6 +7,9 @@
 
 #ifndef LINETRACKING_H_
 #define LINETRACKING_H_
+
+
+
 typedef struct
 {
 	int MinValueActual=0;

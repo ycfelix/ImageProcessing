@@ -11,19 +11,22 @@
 //#include "LineTracking.h"
 #include "logic.h"
 #include <iostream>
+#include <chrono>
 using namespace std;
 
 int main()
 {
+	auto start = std::chrono::high_resolution_clock::now();
 
-
-	//Rotate90degrees(image);
-
-	//TestImageGeometry();
+	//Line geometry=GetGeometry(img);
+	//cout<<"slope: "<<geometry.Slope<< " intercept is: "<<geometry.Intercept<<endl;
 
 	Line geometry=OptimalSlope();
 	cout<<"slope: "<<geometry.slope<< " intercept is: "<<geometry.intercept<<endl;
 
+	auto finish = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> elapsed = finish - start;
+	cout<<" time used: "<<elapsed.count()<<endl;
 	return 0;
 }
 
